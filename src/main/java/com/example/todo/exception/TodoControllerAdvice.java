@@ -1,8 +1,7 @@
-package com.example.todo.Controller;
+package com.example.todo.exception;
 
 
-import com.example.todo.exception.BadRequestException;
-import com.example.todo.exception.NotFoundException;
+import com.example.todo.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

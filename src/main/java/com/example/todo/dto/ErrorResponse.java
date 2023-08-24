@@ -1,4 +1,4 @@
-package com.example.todo.Controller;
+package com.example.todo.dto;
 
 public class ErrorResponse {
     private String message;

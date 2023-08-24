@@ -1,27 +1,34 @@
 package com.example.todo.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "todo")
-@Getter
-@NoArgsConstructor
 public class Todo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    @Setter
     private String title;
 
-    @Builder
-    public Todo(String title) {
-        this.title = title;
-    }
+    private boolean completed;
+
+    private String description;
+    private LocalDateTime deadline;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

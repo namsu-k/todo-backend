@@ -1,35 +1,31 @@
-package com.example.todo.Controller;
+package com.example.todo.controller;
 
-import com.example.todo.Service.TodoService;
-import com.example.todo.Service.TodoServiceImpl;
+import com.example.todo.dto.GetTodoResponse;
+import com.example.todo.service.TodoService;
 import com.example.todo.entity.Todo;
-import com.example.todo.repository.TodoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/todos")
+@RequestMapping("/api/v1/todos")
+@RequiredArgsConstructor
 public class TodoController {
 
     private final TodoService todoService;
 
-    @Autowired
-    public TodoController(TodoService todoService) {
-        this.todoService = todoService;
-    }
-
     @GetMapping
-    public List<Todo> getAllTodos() {
+    public List<GetTodoResponse> getAllTodos() {
         return todoService.getAllTodos();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTodoById(@PathVariable Long id) {
-        Todo todo = todoService.getTodoById(id);
+        GetTodoResponse todo = todoService.getTodoById(id);
         return ResponseEntity.ok(todo);
     }
 
