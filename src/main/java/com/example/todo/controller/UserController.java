@@ -1,5 +1,6 @@
 package com.example.todo.controller;
 
+import com.example.todo.dto.GetMyProfileResponse;
 import com.example.todo.entity.User;
 import com.example.todo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class UserController {
 
     // 내 정보 보기
     @GetMapping("/me")
-    public ResponseEntity<User> getMyProfile() {
+    public ResponseEntity<GetMyProfileResponse> getMyProfile() {
         return ResponseEntity.ok(userService.getMyProfile());
     }
 

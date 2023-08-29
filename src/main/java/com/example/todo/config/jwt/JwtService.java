@@ -43,7 +43,7 @@ public class JwtService {
             .setClaims(extraClaims) // 클레임 정보 추가하기
             .setSubject(userDetails.getUsername()) // 서브젝트 클레임에 유저 이름 추가하기
             .setIssuedAt(new Date(System.currentTimeMillis())) // 발행한 시간 측정하기
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // 만료 시간 추가하기
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 만료 시간 추가하기
             .signWith(getSignInKey(), SignatureAlgorithm.HS256) // 시크릿키 적용 및 암호화 알고리즘 적용하기
             .compact(); // 토큰 변환
     }

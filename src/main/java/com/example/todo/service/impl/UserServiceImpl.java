@@ -1,5 +1,6 @@
 package com.example.todo.service.impl;
 
+import com.example.todo.dto.GetMyProfileResponse;
 import com.example.todo.dto.UpdateMyProfileRequest;
 import com.example.todo.entity.User;
 import com.example.todo.repository.UserRepository;
@@ -17,12 +18,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User getMyProfile() {
+    public GetMyProfileResponse getMyProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        return userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return GetMyProfileResponse.builder()
+            .userId(user.getId())
+            .email(user.getEmail())
+            .name(user.getName())
+            .username(user.getUsername())
+            .build();
     }
 
     @Override
