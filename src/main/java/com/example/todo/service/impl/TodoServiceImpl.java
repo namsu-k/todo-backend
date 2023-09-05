@@ -29,21 +29,25 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public List<TodoResponse> getAllTodos() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<Todo> todoList = todoRepository.findAll();
         List<TodoResponse> responseList = new ArrayList<>();
         for (Todo todo : todoList) {
-            responseList.add(
-                    TodoResponse
-                    .builder()
-                    .title(todo.getTitle())
-                    .description(todo.getDescription())
-                    .completed(todo.isCompleted())
-                    .deadline(todo.getDeadline())
-                    .userId(todo.getUser().getId())
-                    .id(todo.getId())
-                    .username(todo.getUser().getUsername())
-                    .build()
-            );
+            if (todo.getUser().getId() == user.getId()) {
+                responseList.add(TodoResponse
+                        .builder()
+                        .title(todo.getTitle())
+                        .description(todo.getDescription())
+                        .completed(todo.isCompleted())
+                        .deadline(todo.getDeadline())
+                        .userId(todo.getUser().getId())
+                        .id(todo.getId())
+                        .username(todo.getUser().getUsername())
+                        .build());
+            }
         }
         return responseList;
     }
@@ -51,18 +55,18 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoResponse getTodoById(Long id) {
         Todo todo = todoRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Todo not found"));
+                .orElseThrow(() -> new NotFoundException("Todo not found"));
 
         return TodoResponse
-            .builder()
-            .id(todo.getId())
-            .title(todo.getTitle())
-            .completed(todo.isCompleted())
-            .description(todo.getDescription())
-            .deadline(todo.getDeadline())
-            .userId(todo.getUser().getId())
-            .username(todo.getUser().getUsername())
-            .build();
+                .builder()
+                .id(todo.getId())
+                .title(todo.getTitle())
+                .completed(todo.isCompleted())
+                .description(todo.getDescription())
+                .deadline(todo.getDeadline())
+                .userId(todo.getUser().getId())
+                .username(todo.getUser().getUsername())
+                .build();
     }
 
     @Override
@@ -70,18 +74,18 @@ public class TodoServiceImpl implements TodoService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User nor found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User nor found"));
 
         if (request.getTitle() == null) {
             throw new BadRequestException("title is wrong");
         }
         Todo newTodo = Todo.builder()
-            .title(request.getTitle())
-            .completed(false)
-            .deadline(request.getDeadline())
-            .description(request.getDescription())
-            .user(user)
-            .build();
+                .title(request.getTitle())
+                .completed(false)
+                .deadline(request.getDeadline())
+                .description(request.getDescription())
+                .user(user)
+                .build();
 
         return todoRepository.save(newTodo);
     }
@@ -89,34 +93,32 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoResponse updateTodo(Long id, UpdateTodoRequest request) {
         Todo todo = todoRepository.findById(id).orElseThrow(
-            () -> new NotFoundException("Todo not found")
-        );
+                () -> new NotFoundException("Todo not found"));
 
         User user = userRepository.findById(request.getUserId())
-            .orElseThrow(
-                () -> new NotFoundException("User not found")
-            );
+                .orElseThrow(
+                        () -> new NotFoundException("User not found"));
 
         Todo updateTodo = Todo.builder()
-            .id(request.getId())
-            .title(request.getTitle())
-            .description(request.getDescription())
-            .completed(request.isCompleted())
-            .deadline(request.getDeadline())
-            .user(user)
-            .build();
+                .id(request.getId())
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .completed(request.isCompleted())
+                .deadline(request.getDeadline())
+                .user(user)
+                .build();
 
         Todo savedTodo = todoRepository.save(updateTodo);
 
         return TodoResponse.builder()
-            .id(savedTodo.getId())
-            .title(savedTodo.getTitle())
-            .completed(savedTodo.isCompleted())
-            .deadline(savedTodo.getDeadline())
-            .description(savedTodo.getDescription())
-            .userId(savedTodo.getUser().getId())
-            .username(savedTodo.getUser().getUsername())
-            .build();
+                .id(savedTodo.getId())
+                .title(savedTodo.getTitle())
+                .completed(savedTodo.isCompleted())
+                .deadline(savedTodo.getDeadline())
+                .description(savedTodo.getDescription())
+                .userId(savedTodo.getUser().getId())
+                .username(savedTodo.getUser().getUsername())
+                .build();
 
     }
 
@@ -124,7 +126,7 @@ public class TodoServiceImpl implements TodoService {
     public void deleteTodo(Long id) {
 
         Optional<Todo> todo = todoRepository.findById(id);
-        if(todo.isEmpty()) {
+        if (todo.isEmpty()) {
             throw new NotFoundException("Id를 찾을 수 없습니다.");
         }
         todoRepository.deleteById(id);
