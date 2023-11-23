@@ -1,0 +1,64 @@
+﻿URL,메소드,설명,Request Body,Response
+/api/v1/auth/signup,POST,회원가입,"{
+	""username"" : “example”,
+	""password"" : “1234”
+}","{
+	""token"" : String
+}"
+/api/v1/auth/login,POST,로그인,"{
+	""username"" : “example”,
+	""password"" : “1234”
+}","{
+	""token"" : String
+}"
+/api/v1/todos,GET,전체 할 일 목록 조회하기,,"[
+    {
+        ""id"": 1,
+        ""title"": ""Test Todo 1"",
+        ""completed"": true,
+        ""description"": ""test Description 1"",
+        ""deadline"": ""2023-08-27T14:49:14.571511"",
+        ""userId"": 1,
+        ""username"": ""test""
+    },
+    {
+        ""id"": 2,
+        ""title"": ""Test Todo 2"",
+        ""completed"": false,
+        ""description"": ""test Description 2"",
+        ""deadline"": ""2023-08-27T14:49:14.583868"",
+        ""userId"": 1,
+        ""username"": ""test""
+    },
+…
+}"
+/api/v1/todos,POST,할 일 추가하기,"{
+	""title"" : ""New Todo"",
+}",
+/api/v1/todos,DELETE,전체 할 일 목록 삭제하기,,
+/api/v1/todos/{id},GET,할 일 조회하기,,"{
+    ""id"": 1,
+    ""title"": ""Test Todo 1"",
+    ""completed"": true,
+    ""description"": ""test Description 1"",
+    ""deadline"": ""2023-08-27T14:49:14.571511"",
+    ""userId"": 1,
+    ""username"": ""test""
+}"
+/api/v1/todos/{id},PUT,할 일 수정하기,"{
+    ""title"": ""Test Todo 1"",
+    ""completed"": true,
+    ""description"": ""test Description 1"",
+    ""deadline"": ""2023-08-27T14:49:14.571511"",
+}",
+/api/v1/todos/{id},DELETE,할 일 삭제하기,,
+/api/v1/users/me,GET,현재 사용자 정보 조회하기,,"{
+    ""name"" : ""name"",
+    ""email"" : ""email@email.com"",
+    ""username"" : ""username""
+}"
+/api/v1/users/me,PUT,현재 사용자 정보 수정하기,"{
+    ""name"" : ""name"",
+    ""email"" : ""email@email.com"",
+    ""username"" : ""username""
+}",
